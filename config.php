@@ -269,15 +269,40 @@ class Database
         return $wishes;
     }
 
+    public function getProjectsList($user_id)
+    {
+        $sql = "SELECT 
+            p.id,
+            p.name,
+            p.location,
+            p.stage,
+            tmpPs.totalUsers
+        FROM 
+            projects as ps, 
+            project as p,
+            (SELECT project_id, count(project_id) AS totalUsers FROM projects GROUP BY project_id) AS tmpPs
+        WHERE 
+            ps.user_id = ? AND 
+            ps.project_id = p.id AND
+            tmpPs.project_id = p.id;";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $projectsList = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $projectsList;
+    }
+
     public function lastInsertId($table, $data)
     {
-        $keys = implode(', ', array_keys($data));
+        /*$keys = implode(', ', array_keys($data));
         $values = "'" . implode("', '", array_values($data)) . "'";
         $sql = "INSERT INTO $table ($keys) VALUES ($values)";
-        $insert_result = $this->executeQuery($sql);
-
-        echo "<script>console.log('Debug Objects: " . $sql . "' );</script>";
-
+        $insert_result = $this->executeQuery($sql);*/
+        $insert_result = insert($table, $data);
         if ($insert_result) {
             return $this->conn->insert_id;
         } else {

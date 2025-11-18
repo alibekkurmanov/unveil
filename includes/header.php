@@ -50,7 +50,7 @@ function countTable($table)
 
             <li>
                 <a href="./shoping-cart.php"
-                    class="<?= ($currentPage == 'shoping-cart.php') ? 'active' : ''; ?>">Проект(корзина)</a>
+                    class="<?= ($currentPage == 'shoping-cart.php') ? 'active' : ''; ?>">корзина</a>
             </li>
         </ul>
     </nav>
@@ -126,14 +126,14 @@ function countTable($table)
                         <li>
                             <a href="./" class="<?= ($currentPage == 'index.php') ? 'active' : ''; ?>">Главная</a>
                         </li>
-
                         <li>
                             <a href="./heart.php" class="<?= ($currentPage == 'heart.php') ? 'active' : ''; ?>">Нравится</a>
                         </li>
-
                         <li>
-                            <a href="./shoping-cart.php"
-                                class="<?= ($currentPage == 'shoping-cart.php') ? 'active' : ''; ?>">Проект(корзина)</a>
+                            <a href="./shoping-cart.php" class="<?= ($currentPage == 'shoping-cart.php') ? 'active' : ''; ?>">корзина</a>
+                        </li>
+                        <li>
+                            <a href="./projects.php" class="<?= ($currentPage == 'projects.php') ? 'active' : ''; ?>">Проекты</a>
                         </li>
                     </ul>
                 </nav>
