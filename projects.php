@@ -44,7 +44,7 @@ include 'check.php';
                     if (!empty($projectsList)) { 
                         foreach ($projectsList as $project) { ?>
                         <div class="project">
-                            <a href="project_details.php?id=<?php echo $project['id']; ?>">
+                            <a href="project_details.php?project_id=<?php echo $project['id']; ?>">
                                 <div class="project-name"><?php echo $project['name']; ?></div>
                                 <div class="amount-products">Продуктов: <?php echo $project['totalItems'] ?? "0"; ?></div>
                                 <div class="amount-users">Участников: <?php echo $project['totalUsers']; ?> </div>

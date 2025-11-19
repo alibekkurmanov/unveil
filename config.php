@@ -297,6 +297,38 @@ class Database
         return $projectsList;
     }
 
+    public function getProjectItems($project_id)
+    {
+        $sql = "SELECT 
+            pi.id,
+            pi.product_id,
+            a2.name as whoAdded,
+            pi.quantity,
+            pi.schematic,
+            pi.comments,
+            pi.status,
+            pr.name as productName,
+            pr.price_current,
+            pr.size,
+            a.name as sellerName
+        FROM 
+            `project_items` pi
+            join `products` pr on pr.id = pi.product_id
+            join `accounts` a on a.id = pr.seller_id
+            join `accounts` a2 on a2.id = pi.user_id
+        WHERE
+            pi.project_id = ?;";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $project_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $projectDetails = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $projectDetails;
+    }
+
     public function lastInsertId($table, $data)
     {
         /*$keys = implode(', ', array_keys($data));
