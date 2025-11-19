@@ -276,15 +276,16 @@ class Database
             p.name,
             p.location,
             p.stage,
-            tmpPs.totalUsers
+            tmpPs.totalUsers,
+            tmpPi.totalItems
         FROM 
             projects as ps, 
-            project as p,
-            (SELECT project_id, count(project_id) AS totalUsers FROM projects GROUP BY project_id) AS tmpPs
+            project as p
+            left join (SELECT project_id, count(project_id) AS totalUsers FROM projects GROUP BY project_id) AS tmpPs on tmpPs.project_id = p.id
+            left join (SELECT project_id, count(project_id) AS totalItems FROM project_items GROUP BY project_id) as tmpPi on tmpPi.project_id = p.id
         WHERE 
             ps.user_id = ? AND 
-            ps.project_id = p.id AND
-            tmpPs.project_id = p.id;";
+            ps.project_id = p.id;";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $user_id);

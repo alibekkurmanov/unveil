@@ -86,66 +86,55 @@ $product = $query->getProduct($product_id);
                         <a onclick="addToWishlist(<?php echo $product_id; ?>)" class="heart-icon">
                             <i class="fas fa-heart"></i>
                         </a>
+                        <div class="add-toProject">
+                            <a onclick="openProjectSelection()" class="primary-btn">Add to Project</a>
+                        </div>
 
                         <ul>
                             <li><b>Category</b><span><?php echo $query->select('categories', 'category_name', 'WHERE id=' . $product['category_id'])[0]['category_name'] ?></span></li>
+                            <li><b>Далее заглушки: </b> </li>
                             <li><b>Rating</b> <span><?php echo $product['rating']; ?></span></li>
                             <li><b>Quantity</b> <span><?php echo $product['quantity']; ?></span></li>
                             <li><b>Number of sales</b><?= $query->executeQuery("SELECT SUM(number_of_products) AS total_sales FROM cart WHERE product_id = $product_id")->fetch_all()[0][0] ?? 0 ?>
                             </li>
                         </ul>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
+                    <div id="modal" class="modal">
+                        <div class="modal-content">
+                            <span class="close" onclick="closeModal()">&times;</span>
 
-    <section class="related-product">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-title related__product__title">
-                        <h2>Related Product</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <?php
-                $products = $query->select('products', '*', "WHERE category_id = '" . $product['category_id'] . "' LIMIT 8");
-                foreach ($products as $product):
-                    $product_name = $product['name'];
-                    $category_name = $query->select('categories', 'category_name', 'WHERE id=' . $product['category_id'])[0]['category_name'];
-                    $price_current = $product['price_current'];
-                    $price_old = $product['price_old'];
-                    $product_id = $product['id'];
-                    $image = $query->select('product_images', 'image_url', "where product_id = '$product_id'")[0]['image_url'];
-                ?>
-                    <div class="col-lg-3 col-md-4 col-sm-6">
-                        <div class="product__discount__item">
-                            <div class="product__discount__item__pic set-bg"
-                                data-setbg="./src/images/products/<?php echo $image ?>">
-                                <ul class="product__item__pic__hover">
-                                    <li><a onclick="addToWishlist(<?php echo $product_id; ?>)"><i
-                                                class="fa fa-heart"></i></a></li>
-                                    <li><a onclick="openProductDetails(<?php echo $product_id; ?>)"><i
-                                                class="fa fa-retweet"></i></a></li>
-                                    <li><a onclick="addToCart(<?php echo $product_id; ?>, 1)"><i
-                                                class="fa fa-shopping-cart"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="product__discount__item__text">
-                                <span><?php echo $category_name; ?></span>
-                                <h5><a
-                                        onclick="openProductDetails(<?php echo $product_id; ?>)"><?php echo $product_name; ?></a>
-                                </h5>
-                                <div class="product__item__price">$<?php echo $price_current; ?>
-                                    <span>$<?php echo $price_old; ?></span>
-                                </div>
-                            </div>
+                            <h2>Добавление спецификации</h2>
+
+                            <?php 
+                                $projectsList = $query->getProjectsList($_SESSION['id']);
+                                if (empty($projectsList)) { 
+                                    echo "<p>У вас нет проектов. Пожалуйста, сначала <a href=\"projects.php\">создайте проект</a></p>";
+                                } else { ?>
+                                    <form id="addToProjectForm">
+                                        <div class="form-field">
+                                            <label>Количество:</label>
+                                            <input id="quantity" type="number" name="quantity" step="1" min="1" value="1" required />
+                                        </div>
+                                        
+                                        <div class="form-field">
+                                            <label>Выберете проект:</label>
+                                            <select id="projectsList" name="projectsList">
+                                                <?php foreach ($projectsList as $project) { ?>
+                                                    <option value="<?php echo $project['id']; ?>"><?php echo $project['name']; ?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="form-field">
+                                            <button type="button" onclick="addToProject()">Добавить</button>
+                                        </div>
+                                    </form>
+                            <?php } ?> 
+                                
                         </div>
                     </div>
-                <?php endforeach; ?>
-
+                </div>
+                
             </div>
         </div>
     </section>
@@ -162,6 +151,32 @@ $product = $query->getProduct($product_id);
     <script src="./src/js/main.js"></script>
 
     <script>
+        function openProjectSelection() {
+            document.getElementById('modal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        function addToProject() {
+            const form = document.getElementById('addToProjectForm');
+            const formData = new FormData(form);
+            formData.append('product_id', "<?php echo $product_id; ?>");
+            fetch("add_to_project.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data);
+                closeModal();
+                form.reset();
+            })
+            .catch(error => console.error("Ошибка:", error));
+            
+        }
+
         function addToCart(productId, quantity) {
             var xhr = new XMLHttpRequest();
             var url = 'add_to_cart.php?product_id=' + productId + '&quantity=' + quantity;

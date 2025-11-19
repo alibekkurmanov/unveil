@@ -29,69 +29,6 @@ include 'check.php';
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
-<style>
-    .product-image {
-        margin-right: 15px;
-    }
-
-    .shoping__cart__price del {
-        color: red;
-        font-size: 14px;
-        margin-right: 5px;
-    }
-
-    .shoping__cart__price {
-        font-size: 16px;
-        font-weight: bold;
-    }
-
-    .shoping__cart__item__clo span {
-        font-size: 24px;
-        color: #b2b2b2;
-        cursor: pointer;
-    }
-
-    .shoping__cart__item__clo span:hover {
-        color: #ff6347;
-        cursor: pointer;
-    }
-
-    .quantity input {
-        width: 50px;
-        text-align: center;
-    }
-
-    .cart-input {
-        width: 50px;
-        padding: 5px;
-        text-align: center;
-        border-radius: 10px;
-        border: 0.5px solid #3085d6;
-    }
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 0; top: 0;
-        width: 100%; height: 100%;
-        background: rgba(0,0,0,0.6);
-    }
-
-    .modal-content {
-        background: #fff;
-        width: 400px;
-        padding: 20px;
-        margin: 10% auto;
-        border-radius: 8px;
-    }
-
-    .close {
-        float: right;
-        font-size: 24px;
-        cursor: pointer;
-    }
-</style>
-
 <body>
 
     <?php include './includes/header.php'; ?>
@@ -109,7 +46,7 @@ include 'check.php';
                         <div class="project">
                             <a href="project_details.php?id=<?php echo $project['id']; ?>">
                                 <div class="project-name"><?php echo $project['name']; ?></div>
-                                <div class="amount-products">10(const!) продуктов</div>
+                                <div class="amount-products">Продуктов: <?php echo $project['totalItems'] ?? "0"; ?></div>
                                 <div class="amount-users">Участников: <?php echo $project['totalUsers']; ?> </div>
                                 <div class="location">Локация: <?php echo $project['location']; ?></div>
                                 <div class="stage">Стадия: <?php echo $project['stage']; ?></div>
