@@ -12,10 +12,18 @@ class Database
         error_reporting(E_ALL);
         
         /* Спрятать данные */
+        // Локальные данные
         $servername = "localhost";
         $username = "root";
         $password = "";
         $dbname = "Unveil";
+        
+        // PS данные
+        /*$servername = "localhost:3306";
+        $username = "unveilkz_admin";
+        $password = "!nV?b0xhVzOgln66";
+        $dbname = "unveilkz_db";
+        */
 
         $this->conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -125,7 +133,7 @@ class Database
         return false;
     }
 
-    function saveImagesToDatabase($files, $path, $productId)
+    function saveFilesToDatabase($files, $path, $productId, $table)
     {
         if (is_array($files['tmp_name'])) {
             $uploaded_files = array();
@@ -136,7 +144,7 @@ class Database
                 $new_file_name = md5($tmp_name . date("Y-m-d_H-i-s") . rand(1, 9999999) . $productId) . "." . $file_extension;
                 if (move_uploaded_file($tmp_name, $path . $new_file_name)) {
                     $uploaded_files[] = $new_file_name;
-                    $this->insert('product_images', array('product_id' => $productId, 'image_url' => $new_file_name));
+                    $this->insert($table, array('product_id' => $productId, 'image_url' => $new_file_name));
                 }
             }
             return $uploaded_files;
@@ -150,9 +158,10 @@ class Database
             $new_file_name = md5($file_tmp . date("Y-m-d_H-i-s") . rand(1, 9999999) . $productId) . "." . $file_format;
 
             if (move_uploaded_file($file_tmp, $path . $new_file_name)) {
-                $this->insert('product_images', array('product_id' => $productId, 'image_url' => $new_file_name));
+                $this->insert($table, array('product_id' => $productId, 'image_url' => $new_file_name));
                 return $new_file_name;
             }
+            //product_images
             return false;
         }
     }
@@ -331,11 +340,10 @@ class Database
 
     public function lastInsertId($table, $data)
     {
-        /*$keys = implode(', ', array_keys($data));
+        $keys = implode(', ', array_keys($data));
         $values = "'" . implode("', '", array_values($data)) . "'";
         $sql = "INSERT INTO $table ($keys) VALUES ($values)";
-        $insert_result = $this->executeQuery($sql);*/
-        $insert_result = insert($table, $data);
+        $insert_result = $this->executeQuery($sql);
         if ($insert_result) {
             return $this->conn->insert_id;
         } else {

@@ -1902,6 +1902,10 @@ ol {
 	margin-bottom: 70px;
 }
 
+.add-toProject {
+	display: inline-block;
+}
+
 /*---------------------
   Shop Cart
 -----------------------*/

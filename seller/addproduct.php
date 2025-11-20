@@ -42,49 +42,53 @@
                   <div class="card-body">
                     <h4>Добавить продукт</h4>
                     <form action="add_product.php" method="POST" enctype="multipart/form-data" onsubmit="return checkFilesCount()">
-                      <div class="form-group">
-                        <label for="name">Название:</label>
-                        <input type="text" class="form-control" id="name" name="name" required maxlength="30">
-                      </div>
-                      <div class="form-group">
-                        <label for="category_id">Категория:</label>
-                        <select class="form-control" id="category_id" name="category_id" required>
-                          <?php
-                          $categories = $query->getCategories();
-                          foreach ($categories as $id => $category_name) {
-                            echo "<option value='" . $id . "'>" . $category_name . "</option>";
-                          } ?>
-                        </select>
-                      </div>
-                      <div class="form-group">
-                        <label for="price_old">Old Price (нужно?):</label>
-                        <input type="number" class="form-control" id="price_old" name="price_old" required max="99999999999">
-                      </div>
-                      <div class="form-group">
-                        <label for="price_current">Цена:</label>
-                        <input type="number" class="form-control" id="price_current" name="price_current" max="99999999999">
-                      </div>
-                      <div class="form-group">
-                        <label for="unit">Еденица измерения:</label>
-                        <input type="text" class="form-control" id="unit" name="unit" required maxlength="30">
-                      </div>
-                      <div class="form-group">
-                        <label for="description">Описание:</label>
-                        <textarea class="form-control" id="description" name="description" rows="3" required maxlength="2000"></textarea>
-                      </div>
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="image" name="image[]" accept="image/*" multiple>
-                        <label class="custom-file-label" for="image">Добавить изображения...</label>
-                      </div>
-                      <div class="form-group">
-                        <label for="size">Габариты:</label>
-                        <input type="text" class="form-control" id="size" name="size" required maxlength="30">
-                      </div>
-                      <div class="form-group">
-                        <label for="quantity">Количество (нужно?):</label>
-                        <input type="number" class="form-control" id="quantity" name="quantity" required max="99999999999">
-                      </div>
-                      <button type="submit" class="btn btn-primary">Добавить</button>
+                        <div class="form-group">
+                          <label for="name">Название:</label>
+                          <input type="text" class="form-control" id="name" name="name" required maxlength="30">
+                        </div>
+                        <div class="form-group">
+                          <label for="category_id">Категория:</label>
+                          <select class="form-control" id="category_id" name="category_id" required>
+                            <?php
+                            $categories = $query->getCategories();
+                            foreach ($categories as $id => $category_name) {
+                              echo "<option value='" . $id . "'>" . $category_name . "</option>";
+                            } ?>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="price_current">Цена:</label>
+                          <input type="number" class="form-control" id="price_current" name="price_current" max="99999999999">
+                        </div>
+                        <div class="form-group">
+                          <label for="unit">Еденица измерения:</label>
+                          <input type="text" class="form-control" id="unit" name="unit" required maxlength="30">
+                        </div>
+                        <div class="form-group">
+                          <label for="size">Габариты:</label>
+                          <input type="text" class="form-control" id="size" name="size" required maxlength="30">
+                        </div>
+                        <div class="form-group">
+                          <label for="fixation">Фиксация:</label>
+                          <input type="text" class="form-control" id="fixation" name="fixation" maxlength="30">
+                        </div>
+                        <div class="form-group">
+                          <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="image" name="image[]" accept="image/*" multiple>
+                            <label class="custom-file-label" for="image">Добавить изображения...</label>
+                          </div>
+                        </div>           
+                        <div class="form-group">             
+                          <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="documents" name="documents[]" multiple>
+                            <label class="custom-file-label" for="documents">Добавить документы ...</label>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="description">Описание:</label>
+                          <textarea class="form-control" id="description" name="description" rows="3" required maxlength="2000"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Добавить</button>
                     </form>
                   </div>
                 </div>

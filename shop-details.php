@@ -74,15 +74,6 @@ $product = $query->getProduct($product_id);
                             <span style="white-space: pre-wrap;"><?= $product['description']; ?></span>
                         </p>
 
-                        <div class="product__details__quantity">
-                            <div class="quantity">
-                                <div class="pro-qty">
-                                    <input type="text" value="1">
-                                </div>
-                            </div>
-                        </div>
-                        <a onclick="addToCart(<?php echo $product_id; ?>, document.querySelector('.pro-qty input').value)"
-                            class="primary-btn" style="color: white">Add to Cart</a>
                         <a onclick="addToWishlist(<?php echo $product_id; ?>)" class="heart-icon">
                             <i class="fas fa-heart"></i>
                         </a>
