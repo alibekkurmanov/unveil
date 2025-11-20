@@ -43,15 +43,13 @@ function countTable($table)
             <li>
                 <a href="./" class="<?= ($currentPage == 'index.php') ? 'active' : ''; ?>">Главная</a>
             </li>
-
-            <li>
+            <!--<li>
                 <a href="./heart.php" class="<?= ($currentPage == 'heart.php') ? 'active' : ''; ?>">Нравится</a>
             </li>
-
             <li>
                 <a href="./shoping-cart.php"
                     class="<?= ($currentPage == 'shoping-cart.php') ? 'active' : ''; ?>">корзина</a>
-            </li>
+            </li>-->
         </ul>
     </nav>
     <div id="mobile-menu-wrap"></div>
@@ -126,12 +124,12 @@ function countTable($table)
                         <li>
                             <a href="./" class="<?= ($currentPage == 'index.php') ? 'active' : ''; ?>">Главная</a>
                         </li>
-                        <li>
+                        <!--<li>
                             <a href="./heart.php" class="<?= ($currentPage == 'heart.php') ? 'active' : ''; ?>">Нравится</a>
                         </li>
                         <li>
                             <a href="./shoping-cart.php" class="<?= ($currentPage == 'shoping-cart.php') ? 'active' : ''; ?>">корзина</a>
-                        </li>
+                        </li>-->
                         <li>
                             <a href="./projects.php" class="<?= ($currentPage == 'projects.php') ? 'active' : ''; ?>">Проекты</a>
                         </li>
@@ -142,13 +140,10 @@ function countTable($table)
             <div class="col-lg-3">
                 <div class="header__cart">
                     <ul>
-                        <li><a href="./heart.php"><i class="fa fa-heart"></i>
-                                <span><?= countTable('wishes'); ?></span></a></li>
-                        <li><a href="./shoping-cart.php"><i class="fa fa-shopping-bag"></i>
-                                <span><?= countTable('cart'); ?></span></a></li>
+                        <li><a href="./heart.php"><i class="fa fa-heart"></i><span><?= countTable('wishes'); ?></span></a></li>
                     </ul>
-                    <div class="header__cart__price">Total: <span>$<?= number_format($total_price, 2); ?></span>
-                    </div>
+                        <!--<li><a href="./shoping-cart.php"><i class="fa fa-shopping-bag"></i><span><?= countTable('cart'); ?></span></a></li>
+                    <div class="header__cart__price">Total: <span>$<?= number_format($total_price, 2); ?></span></div>-->
                 </div>
             </div>
         </div>

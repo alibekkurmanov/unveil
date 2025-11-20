@@ -82,29 +82,26 @@
                             $price_current = $product['price_current'];
                             $price_old = $product['price_old'];
                             $product_id = $product['id'];
-                            $image = $query->select('product_images', 'image_url', "where product_id = '$product_id'")[0]['image_url'];
+                            // img
+                            $default_image_url = 'no_image.jpg';
+                            $img_result = $query->select('product_images', 'image_url', "where product_id = '$product_id'");
+                            $image = !empty($img_result) ? ("products/".$img_result[0]['image_url']) : $default_image_url;                     
+                            //$image = $query->select('product_images', 'image_url', "where product_id = '$product_id'")[0]['image_url'];
                         ?>
                             <div class="col-lg-3 col-md-4 col-sm-6">
-                                <div class="product__discount__item">
-                                    <div class="product__discount__item__pic set-bg"
-                                        data-setbg="./src/images/products/<?php echo $image ?>">
+                                <div class="product__discount__item" onclick="openProductDetails(<?php echo $product_id; ?>)">
+                                    <div class="product__discount__item__pic set-bg" data-setbg="./src/images/<?php echo $image ?>">
                                         <ul class="product__item__pic__hover">
-                                            <li><a onclick="addToWishlist(<?php echo $product_id; ?>)"><i
-                                                        class="fa fa-heart"></i></a></li>
-                                            <li><a onclick="openProductDetails(<?php echo $product_id; ?>)"><i
-                                                        class="fa fa-retweet"></i></a></li>
-                                            <li><a onclick="addToCart(<?php echo $product_id; ?>)"><i
-                                                        class="fa fa-shopping-cart"></i></a></li>
+                                            <li><a onclick="addToWishlist(<?php echo $product_id; ?>)"><i class="fa fa-heart"></i></a></li>
+                                            <!--<li><a onclick="openProductDetails(<?php echo $product_id; ?>)"><i class="fa fa-retweet"></i></a></li>
+                                            <li><a onclick="addToCart(<?php echo $product_id; ?>)"><i class="fa fa-shopping-cart"></i></a></li>-->
                                         </ul>
                                     </div>
                                     <div class="product__discount__item__text">
                                         <span><?php echo $category_name; ?></span>
-                                        <h5><a
-                                                onclick="openProductDetails(<?php echo $product_id; ?>)"><?php echo $product_name; ?></a>
-                                        </h5>
-                                        <div class="product__item__price">$<?php echo $price_current; ?>
-                                            <span>$<?php echo $price_old; ?></span>
-                                        </div>
+                                        <!--<h5><a onclick="openProductDetails(<?php echo $product_id; ?>)"><?php echo $product_name; ?></a></h5>-->
+                                        <h5><?php echo $product_name; ?></h5>
+                                        <div class="product__item__price">$<?php echo $price_current; ?></div>
                                     </div>
                                 </div>
                             </div>

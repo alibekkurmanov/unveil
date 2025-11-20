@@ -27,10 +27,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($product_id) {
         if (isset($_FILES['documents'])) {
-            $uploaded_documents = $query->saveFilesToDatabase($_FILES['documents'], "../src/documents/products/", $product_id, 'product_docs');
+            $uploaded_documents = $query->saveFilesToDatabase($_FILES['documents'], "../src/documents/products/", $product_id);
         }
         if (isset($_FILES['image'])) {
-            $uploaded_images = $query->saveFilesToDatabase($_FILES['image'], "../src/images/products/", $product_id, 'product_images');
+            $uploaded_images = $query->saveImagesToDatabase($_FILES['image'], "../src/images/products/", $product_id);
         }
         header("Location: ./");
     }

@@ -133,7 +133,7 @@ class Database
         return false;
     }
 
-    function saveFilesToDatabase($files, $path, $productId, $table)
+    function saveImagesToDatabase($files, $path, $productId)
     {
         if (is_array($files['tmp_name'])) {
             $uploaded_files = array();
@@ -144,7 +144,7 @@ class Database
                 $new_file_name = md5($tmp_name . date("Y-m-d_H-i-s") . rand(1, 9999999) . $productId) . "." . $file_extension;
                 if (move_uploaded_file($tmp_name, $path . $new_file_name)) {
                     $uploaded_files[] = $new_file_name;
-                    $this->insert($table, array('product_id' => $productId, 'image_url' => $new_file_name));
+                    $this->insert('product_images', array('product_id' => $productId, 'image_url' => $new_file_name));
                 }
             }
             return $uploaded_files;
@@ -153,15 +153,46 @@ class Database
             $file_tmp = $files['tmp_name'];
 
             $file_info = pathinfo($file_name);
-            $file_format = $file_info['extension'];
+            $file_extension = $file_info['extension'];
 
-            $new_file_name = md5($file_tmp . date("Y-m-d_H-i-s") . rand(1, 9999999) . $productId) . "." . $file_format;
+            $new_file_name = md5($file_tmp . date("Y-m-d_H-i-s") . rand(1, 9999999) . $productId) . "." . $file_extension;
 
             if (move_uploaded_file($file_tmp, $path . $new_file_name)) {
-                $this->insert($table, array('product_id' => $productId, 'image_url' => $new_file_name));
+                $this->insert('product_images', array('product_id' => $productId, 'image_url' => $new_file_name));
                 return $new_file_name;
             }
-            //product_images
+            return false;
+        }
+    }
+
+    function saveFilesToDatabase($files, $path, $productId)
+    {
+        if (is_array($files['tmp_name'])) {
+            $uploaded_files = array();
+            foreach ($files['tmp_name'] as $index => $tmp_name) {
+                $file_name = $files['name'][$index];
+                $file_info = pathinfo($file_name);
+                $file_extension = $file_info['extension'];
+                $new_file_name = md5($tmp_name . date("Y-m-d_H-i-s") . rand(1, 9999999) . $productId) . "." . $file_extension;
+                if (move_uploaded_file($tmp_name, $path . $new_file_name)) {
+                    $uploaded_files[] = $new_file_name;
+                    $this->insert('product_docs', array('product_id' => $productId, 'doc_url' => $new_file_name, 'doc_origin_name' => $file_name.$file_extension));
+                }
+            }
+            return $uploaded_files;
+        } else {
+            $file_name = $files['name'];
+            $file_tmp = $files['tmp_name'];
+
+            $file_info = pathinfo($file_name);
+            $file_extension = $file_info['extension'];
+
+            $new_file_name = md5($file_tmp . date("Y-m-d_H-i-s") . rand(1, 9999999) . $productId) . "." . $file_extension;
+
+            if (move_uploaded_file($file_tmp, $path . $new_file_name)) {
+                $this->insert('product_docs', array('product_id' => $productId, 'doc_url' => $new_file_name, 'doc_origin_name' => $file_name.$file_extension));
+                return $new_file_name;
+            }
             return false;
         }
     }
@@ -206,6 +237,12 @@ class Database
             $id[] = $image['id'];
         }
         return $id;
+    }
+
+    public function getProductDocs($product_id)
+    {
+        $docs = $this->select('product_docs', 'doc_url, doc_origin_name', 'WHERE product_id = ' . $product_id);
+        return $docs;
     }
 
 

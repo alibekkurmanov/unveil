@@ -44,7 +44,11 @@ $product = $query->getProduct($product_id);
                         <div class="product__details__pic__item">
                             <?php
                             $arr = $query->getProductImageID($product_id);
-                            echo '<img " class="product__details__pic__item--large" src="' . "./src/images/products/" . $query->getProductImage($arr[0]) . '" alt="">';
+                            if (count($arr) > 0) {
+                                echo '<img " class="product__details__pic__item--large" src="' . "./src/images/products/" . $query->getProductImage($arr[0]) . '" alt="">';
+                            } else {
+                                echo '<img " class="product__details__pic__item--large" src="' . "./src/images/no_image.jpg" . '" alt="">';
+                            }
                             ?>
                         </div>
                         <div class="product__details__pic__slider owl-carousel">
@@ -64,21 +68,7 @@ $product = $query->getProduct($product_id);
                     <div class="product__details__text">
                         <h3><?php echo $product['name']; ?></h3>
                         <div class="product-price">
-                            <div class="product__item__price">$<?php echo $product['price_current'] ?>
-                                <span>$<?php echo $product['price_old'] ?></span>
-                            </div>
-                        </div>
-
-                        <p style="text-align: justify;">
-                            <b>Product details:</b>
-                            <span style="white-space: pre-wrap;"><?= $product['description']; ?></span>
-                        </p>
-
-                        <a onclick="addToWishlist(<?php echo $product_id; ?>)" class="heart-icon">
-                            <i class="fas fa-heart"></i>
-                        </a>
-                        <div class="add-toProject">
-                            <a onclick="openProjectSelection()" class="primary-btn">Add to Project</a>
+                            <div class="product__item__price">$<?php echo $product['price_current'] ?></div>
                         </div>
 
                         <ul>
@@ -86,9 +76,27 @@ $product = $query->getProduct($product_id);
                             <li><b>Далее заглушки: </b> </li>
                             <li><b>Rating</b> <span><?php echo $product['rating']; ?></span></li>
                             <li><b>Quantity</b> <span><?php echo $product['quantity']; ?></span></li>
-                            <li><b>Number of sales</b><?= $query->executeQuery("SELECT SUM(number_of_products) AS total_sales FROM cart WHERE product_id = $product_id")->fetch_all()[0][0] ?? 0 ?>
+                            <!--<li><b>Number of sales</b><?= $query->executeQuery("SELECT SUM(number_of_products) AS total_sales FROM cart WHERE product_id = $product_id")->fetch_all()[0][0] ?? 0 ?>-->
                             </li>
                         </ul>
+
+                        <?php 
+                        $docs = $query->getProductDocs($product_id);
+                        if (count($docs) > 0) { ?>
+                            <div class="product-docs">
+                                <span><b>Product Documentation:</b></span>
+                                <ul>
+                                    <?php foreach ($docs as $doc) { ?>
+                                        <li><a href="<?php echo "./src/documents/products/" . $doc['doc_url']; ?>" download><i class="fa fa-file"></i> <?php echo $doc['doc_origin_name']; ?></a></li>
+                                    <?php } ?>
+                                </ul>
+                            </div>
+                        <?php } ?>
+
+                        <a onclick="addToWishlist(<?php echo $product_id; ?>)" class="heart-icon"><i class="fas fa-heart"></i></a>
+                        <div class="add-toProject">
+                            <a onclick="openProjectSelection()" class="primary-btn">Add to Project</a>
+                        </div>
                     </div>
                     <div id="modal" class="modal">
                         <div class="modal-content">
@@ -125,7 +133,14 @@ $product = $query->getProduct($product_id);
                         </div>
                     </div>
                 </div>
-                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p style="text-align: justify;">
+                            <div><b>Product details:</b></div>
+                            <span style="white-space: pre-wrap;"><?= $product['description']; ?></span>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

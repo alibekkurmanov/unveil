@@ -37,7 +37,7 @@ include 'check.php';
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div><a onclick="addNewProject()">Новый проект(кликабельная кнопка)</a></div>
+                    <div><a onclick="addNewProject()" class="primary-btn">Создать новый проект</a></div>
                     <div>-----</div> 
                     <?php 
                     $projectsList = $query->getProjectsList($_SESSION['id']);
